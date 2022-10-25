@@ -58,7 +58,7 @@ function getLocalStorage(){
 
 createTask()
 completedTask()
-
+//creating div for active task
 function createTask(){
     tasks.innerHTML = ""
     for(i=0;i<task.length;i++){   
@@ -99,7 +99,7 @@ function delete1(){
     // localStorage.setItem("task", JSON.stringify(task))
     console.log(task)
 }
-
+ 
 function editTask(e){
     edt = e
     document.querySelector("#title-text1").value = task[e].Title
@@ -117,13 +117,13 @@ function edit(){
     console.log(task)
     setLocalStorage()
 }
-
+//clear the inputs after submission
 function resetForm(){
     tasktitle.value = ""
     taskdesc.value = ""
     taskdate.value = ""
 }
-
+//checking which type of sorting is to done
 document.querySelector(".form-select").addEventListener("change",function(){
     if(this.value == 1){
         titlesort()
@@ -137,10 +137,10 @@ document.querySelector(".form-select").addEventListener("change",function(){
         // localStorage.setItem("task", JSON.stringify(task))
         createTask()
         console.log(task)
-        setlocalStorage()
+        setLocalStorage()
     }
 })
-
+//title sorting
 function titlesort(){
     return task.sort(function (a,b){
         if(a.Title.toLowerCase()<b.Title.toLowerCase()){
@@ -152,7 +152,7 @@ function titlesort(){
         return 0
     })
 }
-
+//date sorting
 function datesort(){
     return task.sort(function (a,b){
         if(a.Date < b.Date){
@@ -196,7 +196,7 @@ function datesort(){
 //         // console.log(task)
 //     // }
 // }
-
+//checking the task is active or completed
 function checkingBox(e){
     var index = document.getElementById(e)
     if(index.checked == true){
@@ -213,7 +213,7 @@ function checkingBox(e){
     countTask()
     console.log(task)
 }
-
+//creating div for completed task
 function completedTask(){
     completed.innerHTML = ""
     for(i=0;i<task.length;i++){   
@@ -240,10 +240,10 @@ function completedTask(){
     resetForm()
     countTask()
 }
-
+//clearing completed task
 function clearCompletedTask(){
     for(k=0;k<task.length;k++ ){
-        if(task[k].Check == "completed")
+        if(task[k].Check == "completed")        //checking the task is completed or not
         {
             task.splice(k,1)
             k--
@@ -256,21 +256,21 @@ function clearCompletedTask(){
     completedTask()
     countTask()
 }
-
+//displaying all tab
 function displayAll(){
     document.querySelector('#tasks').style.display = "block";
     document.querySelector('#completed').style.display = "block";
     document.querySelector('#active').style.display = "block";
     document.querySelector('#comp').style.display = "block";
 }
-
+//displaying active tab
 function displayActive(){
     document.querySelector('#tasks').style.display = "block";
     document.querySelector('#completed').style.display = "none";
     document.querySelector('#active').style.display = "block";
     document.querySelector('#comp').style.display = "none";
 }
-
+//displaying completed tab
 function displayCompleted(){
     document.querySelector('#tasks').style.display = "none";
     document.querySelector('#completed').style.display = "block";
@@ -285,7 +285,7 @@ function displayCompleted(){
 //     }
 //     console.log(date)
 // }
-
+//displaying counts of each task
 function countTask(){
     all_counter.innerHTML = ""
     active_counter.innerHTML = ""
