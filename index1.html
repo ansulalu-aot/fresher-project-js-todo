@@ -21,13 +21,13 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto gap-lg-5">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#" onclick="displayAll()">All( <span id="counter"></span> )</a>
+                            <a class="nav-link active" href="#" onclick="displayAll()">All( <span id="all-counter"></span> )</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="displayActive()">Active( )</a>
+                            <a class="nav-link" href="#" onclick="displayActive()">Active( <span id="active-counter"></span> )</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="displayCompleted()">Completed( )</a>
+                            <a class="nav-link" href="#" onclick="displayCompleted()">Completed( <span id="completed-counter"></span> )</a>
                         </li>
                     </ul>
                     <div class="d-flex gap-3">
@@ -42,7 +42,7 @@
         <div class="d-flex flex-col gap-5">
             <div class="d-flex col-6">
                 <form class="container-fluid px-0">
-                    <div class="input-group rounded border border-1" onclick="searchTask()">
+                    <div class="input-group rounded border border-1" onkeyup="searchTask()">
                         <input type="text" class="form-control border-0" placeholder="Search by task name" aria-label="Username">
                         <button class="btn" type="submit"><i class="bi bi-search"></i></button>
                     </div>
@@ -61,11 +61,9 @@
 <!-- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
         <h6 class="mt-4 mx-2" id="active">Active Tasks</h6>
         <div id="tasks">
-        
         </div>
         <h6 class="mt-5 mx-2" id="comp">Completed Tasks</h6>
         <div id="completed">
-
         </div>
 <!-- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
         <form class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
@@ -134,7 +132,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header border border-0">
-                        <h1 class="modal-title fs-5 px-5" id="exampleModalLabel3">Delete Task?</h1>
+                        <h1 class="modal-title fs-5 text-center" id="exampleModalLabel3">Delete Task?</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">

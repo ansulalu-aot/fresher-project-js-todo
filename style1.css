@@ -12,3 +12,9 @@ body{
     background-color:#26AD13 !important;
     border-color: #26AD13 !important;
 }
+.nav-item a{
+    cursor: pointer;
+}
+#exampleModalLabel3{
+    padding-left: 170px;
+}
