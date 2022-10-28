@@ -5,12 +5,14 @@ let tasktitle = document.getElementById("title-text")
 let taskdesc = document.getElementById("message-text")
 let taskdate = document.getElementById("due-date")
 let tasks = document.getElementById("tasks")
+let completed = document.getElementById("completed")
 let add = document.getElementById("add")
 let dlt , edt
 let task = []
 let all_counter = document.getElementById("all-counter")
 let active_counter = document.getElementById("active-counter")
 let completed_counter = document.getElementById("completed-counter")
+// let search = document.getElementById("searchtasks")
 getLocalStorage()
 //form submission
 form.addEventListener("submit",(e)=>{
@@ -30,7 +32,7 @@ function formValidation(){
     }
 }
 //dismiss add after submission
- function clk(){
+function clk(){
     add.click()
     add.setAttribute("data-bs-dismiss","")
 }
@@ -64,15 +66,15 @@ function createTask(){
     for(i=0;i<task.length;i++){   
         if(task[i].Check == "active"){                   
         tasks.innerHTML += `
-            <div class="d-flex justify-content-between align-items-center border border-1 py-4 my-4" id="product">
+            <div class="d-flex justify-content-between align-items-center border border-1 py-4 my-4 rounded-2 shadow">
                 <div class="d-flex align-items-center flex-col px-4 gap-4">
                     <div class="form-check ">
                         <input class="form-check-input rounded-circle check" onclick="checkingBox(${i});" style="width: 42px; height:42px" type="checkbox" value="" id="${i}">
                         <label class="form-check-label" for="flexCheckDefault"></label>
                     </div>
                     <div class="row">
-                        <p id="pn">${task[i].Title} <img  src="Ellipse 1.png"></p>
-                        <p><i class="bi bi-calendar3 text-secondary"></i> by ${task[i].Date}</p>
+                        <p>${task[i].Title} <img  src="Ellipse 1.png"></p>
+                        <p id="date${i}"><i class="bi bi-calendar3 text-secondary"></i> by ${task[i].Date}</p>
                     </div>
                 </div>
                 <div class="px-3 d-flex gap-4">
@@ -80,7 +82,9 @@ function createTask(){
                     <i data-bs-toggle="modal" data-bs-target="#exampleModal3" onclick="deleteTask(${i})" class="bi bi-trash text-danger"></i>
                 </div>
             </div>  
-        `}  
+        `
+    overDue(i)
+}  
     }
     resetForm()
     countTask()
@@ -126,14 +130,14 @@ function resetForm(){
 //checking which type of sorting is to done
 document.querySelector(".form-select").addEventListener("change",function(){
     if(this.value == 1){
-        titlesort()
+        titleSort()
         // localStorage.setItem("task", JSON.stringify(task))
         createTask()
         console.log(task)
         setLocalStorage()
     }
     else{
-        datesort()
+        dateSort()
         // localStorage.setItem("task", JSON.stringify(task))
         createTask()
         console.log(task)
@@ -141,10 +145,10 @@ document.querySelector(".form-select").addEventListener("change",function(){
     }
 })
 //title sorting
-function titlesort(){
+function titleSort(){
     return task.sort(function (a,b){
         if(a.Title.toLowerCase()<b.Title.toLowerCase()){
-            return -1 
+            return -1
         }
         if(a.Title.toLowerCase()>b.Title.toLowerCase()){
             return 1
@@ -153,7 +157,7 @@ function titlesort(){
     })
 }
 //date sorting
-function datesort(){
+function dateSort(){
     return task.sort(function (a,b){
         if(a.Date < b.Date){
           return -1
@@ -164,38 +168,6 @@ function datesort(){
         return 0  
     })
 }
-
-// let searchTask = () => {
-//     let searchtitle = document.querySelector(".form-control").value
-//     let storeitems = document.getElementById("tasks")
-//     let product = document.querySelectorAll("#product")
-//     let pname = storeitems.getElementById("pn")
-//     for(i=0;i<pname.length;i++){
-//         let match = product[i].getElementById('pn')[0]
-//         if(match){
-//             let textvalue = match.textContent || match.innerHTML
-//             if(textvalue.indexOf(searchtitle)> -1){
-//                 product[i].style.display = ""
-//             }
-//             else{
-//                 product[i].style.display = "none"
-//             }
-//         }
-//     }
-// }
-
-// let searchtitle = document.querySelector(".form-control").value
-// searchtitle.addEventListener("onkeyup",function(){
-//     searchTask()
-//     console.log(task)
-// })
-
-// function searchTask(){
-//     return task.includes(searchtitle)
-//     // if(searchtitle in task){
-//         // console.log(task)
-//     // }
-// }
 //checking the task is active or completed
 function checkingBox(e){
     var index = document.getElementById(e)
@@ -219,7 +191,7 @@ function completedTask(){
     for(i=0;i<task.length;i++){   
         if(task[i].Check == "completed"){                   
         completed.innerHTML += `
-            <div class="d-flex justify-content-between align-items-center border border-1 py-4 my-4">
+            <div class="d-flex justify-content-between align-items-center border border-1 py-4 my-4 rounded-2 shadow">
                 <div class="d-flex align-items-center flex-col px-4 gap-4">
                     <div class="form-check ">
                         <input class="form-check-input rounded-circle check" onclick="checkingBox(${i})" style="width: 42px; height:42px" type="checkbox" value="" id="${i}" checked>
@@ -243,8 +215,7 @@ function completedTask(){
 //clearing completed task
 function clearCompletedTask(){
     for(k=0;k<task.length;k++ ){
-        if(task[k].Check == "completed")        //checking the task is completed or not
-        {
+        if(task[k].Check == "completed"){        //checking the task is completed or not
             task.splice(k,1)
             k--
             console.log(task)
@@ -277,14 +248,15 @@ function displayCompleted(){
     document.querySelector('#active').style.display = "none";
     document.querySelector('#comp').style.display = "block";
 }
-
-// function overDue(){
-//     const date = new Date()
-//     if(task[i].Date >= date){
-        
-//     }
-//     console.log(date)
-// }
+//highlighting overdue
+function overDue(index) {
+    let currentDate = new Date();
+    let todoDate = new Date(task[index].Date);
+    if(currentDate > todoDate){ 
+        document.getElementById(`date${index}`).style.color = " #C03503";
+        document.getElementById(`date${index}`).style.backgroundColor = "rgba(192, 53, 3, 0.06)";
+    }
+}
 //displaying counts of each task
 function countTask(){
     all_counter.innerHTML = ""
@@ -298,5 +270,71 @@ function countTask(){
         if(task[i].Check == "completed"){
             completed_counter.innerHTML++
         }
+    }
+}
+//search
+let filteredArray = []
+function searchTask(){
+    let searchtitle = document.querySelector(".form-control").value
+    result = task.filter(function(x,index){
+        ind = (x.Title.toLowerCase().includes(searchtitle))
+        if(ind){
+            filteredArray.push(index)
+           
+        }
+    })
+    tasks.innerHTML = ""
+    completed.innerHTML = ""
+    for(i=0;i<filteredArray.length;i++){
+        activeSearch()
+        completedSearch()
+    }
+    filteredArray = []
+}
+//searched active 
+function activeSearch(){
+    if(task[filteredArray[i]].Check == "active"){
+        tasks.innerHTML += `
+            <div class="d-flex justify-content-between align-items-center border border-1 py-4 my-4 rounded-2 shadow">
+                <div class="d-flex align-items-center flex-col px-4 gap-4">
+                    <div class="form-check ">
+                        <input class="form-check-input rounded-circle check" onclick="checkingBox(${filteredArray[i]})" style="width: 42px; height:42px" type="checkbox" value="" id="${filteredArray[i]}">
+                        <label class="form-check-label" for="flexCheckDefault"></label>
+                    </div>
+                    <div class="row">
+                        <p>${task[filteredArray[i]].Title} <img src="Ellipse 1.png"></p>
+                        <p id="date${i}"><i class="bi bi-calendar3 text-secondary"></i> by ${task[filteredArray[i]].Date}</p>
+                    </div>
+                </div>
+                <div class="px-3 d-flex gap-4">
+                    <i data-bs-toggle="modal" data-bs-target="#exampleModal2" onclick="editTask(${filteredArray[i]})" class="bi bi-pencil-fill text-secondary"></i>
+                    <i data-bs-toggle="modal" data-bs-target="#exampleModal3" onclick="deleteTask(${filteredArray[i]})" class="bi bi-trash text-danger"></i>
+                </div>
+            </div>                
+        `
+        overDue(filteredArray[i])
+    }
+}
+//searched completed
+function completedSearch(){
+    if(task[filteredArray[i]].Check == "completed"){
+        completed.innerHTML += `
+            <div class="d-flex justify-content-between align-items-center border border-1 py-4 my-4 rounded-2 shadow">
+                <div class="d-flex align-items-center flex-col px-4 gap-4">
+                    <div class="form-check ">
+                        <input class="form-check-input rounded-circle check" onclick="checkingBox(${filteredArray[i]})" style="width: 42px; height:42px" type="checkbox" value="" id="${filteredArray[i]}" checked>
+                        <label class="form-check-label" for="flexCheckDefault"></label>
+                    </div>
+                    <div class="row">
+                        <p>${task[filteredArray[i]].Title} <img src="Ellipse 12.png"></p>
+                        <p><i class="bi bi-calendar3 text-secondary"></i> by ${task[filteredArray[i]].Date}</p>
+                    </div>
+                </div>
+                <div class="px-3 d-flex gap-4">
+                    <i data-bs-toggle="modal" data-bs-target="#exampleModal2" onclick="editTask(${filteredArray[i]})" class="bi bi-pencil-fill text-secondary"></i>
+                    <i data-bs-toggle="modal" data-bs-target="#exampleModal3" onclick="deleteTask(${filteredArray[i]})" class="bi bi-trash text-danger"></i>
+                </div>
+            </div>     
+        `
     }
 }
