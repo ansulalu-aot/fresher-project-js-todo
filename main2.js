@@ -12,7 +12,7 @@ let task = []
 let all_counter = document.getElementById("all-counter")
 let active_counter = document.getElementById("active-counter")
 let completed_counter = document.getElementById("completed-counter")
-// let search = document.getElementById("searchtasks")
+
 getLocalStorage()
 //form submission
 form.addEventListener("submit",(e)=>{
@@ -47,7 +47,6 @@ let acceptData = () => {
     console.log(task) 
     createTask()
     setLocalStorage()
-    // localStorage.setItem("task", JSON.stringify(task))
 }
 
 function setLocalStorage(){
@@ -83,8 +82,8 @@ function createTask(){
                 </div>
             </div>  
         `
-    overDue(i)
-}  
+        overDue(i)
+        }  
     }
     resetForm()
     countTask()
@@ -100,7 +99,6 @@ function delete1(){
     completedTask()
     setLocalStorage()
     countTask()
-    // localStorage.setItem("task", JSON.stringify(task))
     console.log(task)
 }
  
@@ -117,7 +115,6 @@ function edit(){
     task[edt].Date = document.getElementById("due-date1").value
     createTask()
     completedTask()
-    // localStorage.setItem("task", JSON.stringify(task))
     console.log(task)
     setLocalStorage()
 }
@@ -131,14 +128,12 @@ function resetForm(){
 document.querySelector(".form-select").addEventListener("change",function(){
     if(this.value == 1){
         titleSort()
-        // localStorage.setItem("task", JSON.stringify(task))
         createTask()
         console.log(task)
         setLocalStorage()
     }
     else{
         dateSort()
-        // localStorage.setItem("task", JSON.stringify(task))
         createTask()
         console.log(task)
         setLocalStorage()
@@ -173,11 +168,9 @@ function checkingBox(e){
     var index = document.getElementById(e)
     if(index.checked == true){
         task[e].Check = "completed"
-        // localStorage.setItem("task", JSON.stringify(task))
     }
     else{
         task[e].Check = "active"
-        // localStorage.setItem("task", JSON.stringify(task))
     }
     createTask()
     completedTask()
@@ -220,7 +213,6 @@ function clearCompletedTask(){
             k--
             console.log(task)
             setLocalStorage()
-            // localStorage.setItem("task", JSON.stringify(task))
         }
     }
     createTask()
